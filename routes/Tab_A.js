@@ -1,5 +1,5 @@
 var Contacs = require('../models/contacs.js');
-var PREFIX = '/A'
+var PREFIX = '/A';
 module.exports = function(app)
 {
     // GET ALL BOOKS
@@ -9,16 +9,20 @@ module.exports = function(app)
             res.json(books);
         })
     });
-    app.get(prefix+'/api/hello', function(req,res){
+    app.get(PREFIX+'/api/hello', function(req,res){
         res.writeHead(200,{"Content-Type":"text/plain"});
         console.log("hello");
         res.write("Hello A");
         res.end();
     });
-    app.get(prefix+'/api/bye', function(req,res) {
+    app.get(PREFIX+'/api/bye', function(req,res) {
         res.writeHead(200,{"Content-Type":"text/plain"});
         console.log("bye");
         res.write("Bye A");
         res.end();
     });
+    app.get(PREFIX+'/contacts', function(req,res) {
+        res.write("[{\"name\":\"Gimun\", \"email\":\"gimunlee@kaist.ac.kr\", \"phone\":\"010-8866-3321\"},{\"name\":\"Dongmin\", \"email\":\"dongmin.seo@kaist.ac.kr\", \"phone\":\"010-seo-3321\"}]");
+        res.end();
+    })
 }
