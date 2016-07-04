@@ -22,6 +22,7 @@ module.exports = function(app)
         res.end();
     });
     app.get(PREFIX+'/contacts', function(req,res) {
+        console.log("Sending sample data of size 2");
         res.write("[{\"name\":\"Gimun\", \"email\":\"gimunlee@kaist.ac.kr\", \"phone\":\"010-8866-3321\"},{\"name\":\"Dongmin\", \"email\":\"dongmin.seo@kaist.ac.kr\", \"phone\":\"010-seo-3321\"}]");
         res.end();
     })
