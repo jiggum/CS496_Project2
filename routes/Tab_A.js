@@ -13,12 +13,12 @@ module.exports = function(app)
         console.log("hello");
         res.write("Hello A");
         res.end();
-    })
+    });
     app.get('/A/bye', function(req,res) {
         res.writeHead(200,{"Content-Type":"text/plain"});
         console.log("bye");
         res.write("Bye A");
         res.end();
-    }
+    });
          
 }
