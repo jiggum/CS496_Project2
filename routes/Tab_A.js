@@ -8,11 +8,17 @@ module.exports = function(app)
             res.json(books);
         })
     });
-    app.get('/A', function(req,res){
+    app.get('/A/hello', function(req,res){
         res.writeHead(200,{"Content-Type":"text/plain"});
-        console.log("Saying Hello");
+        console.log("hello");
         res.write("Hello A");
         res.end();
     })
+    app.get('/A/bye', function(req,res) {
+        res.writeHead(200,{"Content-Type":"text/plain"});
+        console.log("bye");
+        res.write("Bye A");
+        res.end();
+    }
          
 }
