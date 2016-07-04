@@ -10,6 +10,7 @@ module.exports = function(app)
     });
     app.get('/A', function(req,res){
         res.writeHead(200,{"Content-Type":"text/plain"});
+        console.log("Saying Hello");
         res.write("Hello A");
         res.end();
     })
