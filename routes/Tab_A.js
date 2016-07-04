@@ -1,9 +1,9 @@
 var Contacs = require('../models/contacs.js');
-var prefix = '/A';
+var PREFIX = '/A'
 module.exports = function(app)
 {
     // GET ALL BOOKS
-    app.get(prefix+'/api/books', function(req,res){
+    app.get(PREFIX+'/api/books', function(req,res){
         Contacs.find(function(err, books){
             if(err) return res.status(500).send({error: 'database failure'});
             res.json(books);

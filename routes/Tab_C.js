@@ -1,8 +1,9 @@
 var Ground = require('../models/ground.js');
+var PREFIX = '/C';
 module.exports = function(app)
 {
     // GET ALL BOOKS
-    app.get('/api/books', function(req,res){
+    app.get(PREFIX+'/api/books', function(req,res){
         Ground.find(function(err, books){
             if(err) return res.status(500).send({error: 'database failure'});
             res.json(books);
@@ -10,7 +11,7 @@ module.exports = function(app)
     });
 
     // GET SINGLE BOOK
-    app.get('/api/books/:book_id', function(req, res){
+    app.get(PREFIX+'/api/books/:book_id', function(req, res){
         Ground.findOne({_id: req.params.book_id}, function(err, book){
             if(err) return res.status(500).json({error: err});
             if(!book) return res.status(404).json({error: 'book not found'});
@@ -19,7 +20,7 @@ module.exports = function(app)
     });
 
     // GET BOOK BY AUTHOR
-    app.get('/api/books/author/:author', function(req, res){
+    app.get(PREFIX+'/api/books/author/:author', function(req, res){
         Ground.find({author: req.params.author}, {_id: 0, title: 1, published_date: 1},  function(err, books){
             if(err) return res.status(500).json({error: err});
             if(books.length === 0) return res.status(404).json({error: 'book not found'});
@@ -28,7 +29,7 @@ module.exports = function(app)
     });
 
     // CREATE BOOK
-    app.post('/api/books', function(req, res){
+    app.post(PREFIX+'/api/books', function(req, res){
         var book = new Ground();
         book.title = req.body.title;
         book.author = req.body.author;
@@ -47,7 +48,7 @@ module.exports = function(app)
     });
 
     // UPDATE THE BOOK
-    app.put('/api/books/:book_id', function(req, res){
+    app.put(PREFIX+'/api/books/:book_id', function(req, res){
         Ground.update({ _id: req.params.book_id }, { $set: req.body }, function(err, output){
             if(err) res.status(500).json({ error: 'database failure' });
             console.log(output);
@@ -70,7 +71,7 @@ module.exports = function(app)
     });
 
     // DELETE BOOK
-    app.delete('/api/books/:book_id', function(req, res){
+    app.delete(PREFIX+'/api/books/:book_id', function(req, res){
         Ground.remove({ _id: req.params.book_id }, function(err, output){
             if(err) return res.status(500).json({ error: "database failure" });
 
