@@ -29,7 +29,7 @@ module.exports = function(app, db)
                 return console.error(err);
             if(contactsList) {
                 console.log("Sending list : " + contactsList);
-                res.write(contactsList);
+                res.write(contactsList.toString());
                 res.end();
             }
             else {
