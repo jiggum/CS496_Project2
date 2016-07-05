@@ -25,8 +25,8 @@ module.exports = function (app) {
     app.get(PREFIX + '/contacts', function (req, res) {
         User.count({ fid: req.query.fid }, function(err, count) {
             if(count==0) {
-                console.log(fid + " not found.");
-                res.write(fid + " not found.");
+                console.log(req.query.fid + " not found.");
+                res.write(req.query.fid + " not found.");
                 res.end();
                 return;
             }
