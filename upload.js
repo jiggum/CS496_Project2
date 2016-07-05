@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-var Contacts = require("../models/contacs.js");
+var contacts = require("./models/contacts.js");
 
 mongoose.connect("mongodb://localhost/test");
 
@@ -7,7 +7,7 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function() {
 	console.log("MongoDB Connected");
-}
+});
 
 var gimun = new contacts({name: "Gimun",
 													email: "gimunlee@kaist.ac.kr",
