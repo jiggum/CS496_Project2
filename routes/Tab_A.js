@@ -44,6 +44,9 @@ module.exports = function (app) {
                 contact.save();
                 console.log('Person ' + i + " name : " + req.body.name);
             }
+            res.writeHead(201);
+            res.write("Well reset with json");
+            res.end();
         });
     });
 }
