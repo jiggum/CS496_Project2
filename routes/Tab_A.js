@@ -26,8 +26,8 @@ module.exports = function (app, db) {
             if (err)
                 return console.error(err);
 
-            console.log("Sending list : " + contactsList);
-            res.write(contactsList.toString());
+            console.log("Sending list : " + "[" + contactsList + "]");
+            res.write("[" + contactsList + "]");
             res.end();
         });
     })
