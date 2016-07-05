@@ -37,10 +37,19 @@ module.exports = function (app, db) {
         db.collections['contacts'].drop(function (err) {
             console.log('collection dropped');
             for(var i=0;i<req.body.length;i++) {
-                console.log("Person " + i);
-                console.log(req.body[i].name);
-                console.log(req.body[i].email);
-                console.log(req.body[i].phone);
+                console.log("Person " + i + req.body[i].name);
+                // console.log(req.body[i].name);
+                // console.log(req.body[i].email);
+                // console.log(req.body[i].phone);
+                var contact = new contacts({
+                    name: req.body[i].name,
+                    email: req.body[i].email,
+                    phone: req.body[i].phone
+                });
+                contact.save(function(err, contact) {
+                    if(err)
+                        return console.error(err);
+                });
             }
         });
         res.writeHead(201);
