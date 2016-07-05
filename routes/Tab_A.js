@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var contactSchema = require('../models/contacts.js');
 var contactModel;
 var PREFIX = '/A';
