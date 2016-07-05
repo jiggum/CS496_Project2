@@ -35,7 +35,7 @@ module.exports = function (app) {
         })
     });
     app.post(PREFIX + '/contacts', function (req, res) {
-        if(User.count({fid=req.query.fid})==0) {
+        if(User.count({fid:req.query.fid})==0) {
             console.log(fid + " not found.");
             res.write(fid + " not found.");
             return;
