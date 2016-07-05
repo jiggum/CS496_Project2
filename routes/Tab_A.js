@@ -23,19 +23,19 @@ module.exports = function (app) {
 
     })
     app.get(PREFIX + '/contacts', function (req, res) {
-        console.log(User.count({ fid: req.query.fid }));
-        if (User.count({ fid: req.query.fid }) == 0) {
-            console.log(fid + " not found.");
-            res.write(id + " not found.");
-            res.end();
-        }
-        else {
-            // var json = User.findOne({ fid: req.query.fid }, function (err, user) {
-            //     if(err) return err;
-            //     res.write(user.contacts);
-            //     res.end();
-            // });
-        }
+        User.count({ fid: req.query.fid }, function(err, count) {
+            if(count==0) {
+                console.log(fid + " not found.");
+                res.write(fid + " not found.");
+                res.end();
+                return;
+            }
+            var json = User.findOne({ fid: req.query.fid }, function (err, user) {
+                if(err) return err;
+                res.write(user.contacts);
+                res.end();
+            });
+        });
     });
     app.post(PREFIX + '/contacts', function (req, res) {
         console.log(User.count({ fid: req.query.fid }).toString());
