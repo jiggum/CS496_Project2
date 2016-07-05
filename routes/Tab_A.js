@@ -31,6 +31,7 @@ module.exports = function (app) {
         }
         else {
             var json = User.findOne({ fid: req.query.fid }, function (err, user) {
+                if(err) return err;
                 res.write(user.contacts);
                 res.end();
             });
