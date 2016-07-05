@@ -9,4 +9,4 @@ var contactSchema = new Schema({
 });
 
 // module.exports = mongoose.model('book', bookSchema);
-module.exports = mongoose.model('contact', contactSchema);
+module.exports = contactSchema;
