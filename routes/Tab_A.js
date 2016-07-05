@@ -1,29 +1,49 @@
-var Contacs = require('../models/user.js');
-var PREFIX = '/A'
-module.exports = function(app)
-{
-    // GET ALL BOOKS
-    app.get(PREFIX+'/api/books', function(req,res){
-        Contacs.find(function(err, books){
-            if(err) return res.status(500).send({error: 'database failure'});
-            res.json(books);
-        })
-    });
-    app.get(PREFIX+'/api/hello', function(req,res){
-        res.writeHead(200,{"Content-Type":"text/plain"});
-        console.log("hello");
-        res.write("Hello A");
+var mongoose = require('mongoose');
+var contactSchema = require('../models/contacts.js');
+var contactModel;
+var PREFIX = '/A';
+
+module.exports = function (app) {
+    app.get(PREFIX + '/api/hello', function (req, res) {
+        var fid = req.query.fid;
+        var helloStr = "Hello, " + fid + ". This is A"
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        console.log(helloStr);
+        res.write(helloStr);
         res.end();
     });
-    app.get(PREFIX+'/api/bye', function(req,res) {
-        res.writeHead(200,{"Content-Type":"text/plain"});
-        console.log("bye");
-        res.write("Bye A");
+    app.get(PREFIX + '/api/bye', function (req, res) {
+        var fid = req.query.fid;
+        var byeStr = "Bye, " + fid + ". Sincerely A";
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        console.log(byeStr);
+        res.write(byeStr);
         res.end();
     });
-    app.get(PREFIX+'/contacts', function(req,res) {
-        console.log("Sending sample data of size 2");
-        res.write("[{\"name\":\"Gimun\", \"email\":\"gimunlee@kaist.ac.kr\", \"phone\":\"010-8866-3321\"},{\"name\":\"Dongmin\", \"email\":\"dongmin.seo@kaist.ac.kr\", \"phone\":\"010-seo-3321\"}]");
-        res.end();
-    })
+    app.get(PREFIX + '/contacts', function (req, res) {
+        console.log('get contacts');
+        contactModel = mongoose.model(req.query.fid + "contact", contactSchema, req.query.fid);
+        contactModel.find(function (err, contactsList) {
+            if (err) return console.error(err);
+            var json = "[" + contactsList + "]";
+            res.write(json);
+            res.end();
+        });
+    });
+    app.post(PREFIX + '/contacts', function (req, res) {
+        contactModel = mongoose.model(req.query.fid + "contact", contactSchema, req.query.fid);
+        contactModel.remove({}, function (err) {
+            for (var i = 0; i < req.body.length; i++) {
+                var contact = new contactModel({
+                    name: req.body[i].name,
+                    email: req.body[i].email,
+                    phone: req.body[i].phone
+                });
+                contact.save();
+            }
+            res.writeHead(201);
+            res.write("Well reset with json");
+            res.end();
+        });
+    });
 }

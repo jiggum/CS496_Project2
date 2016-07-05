@@ -6,6 +6,9 @@ var app         = express();
 var bodyParser  = require('body-parser');
 var mongoose    = require('mongoose');
 var connect = require('connect');
+
+var port = 10012
+
 // [ CONFIGURE mongoose ]
 
 // CONNECT TO MONGODB SERVER
@@ -37,7 +40,11 @@ require('./routes/Tab_B.js')(app);
 require('./routes/Tab_C.js')(app);
 
 // [RUN SERVER]
-var server = app.listen(10900, function(){
- console.log("Express server has started on port " + 10900)
+var User = require('./models/user.js');
+var user = new User({_id:"gimun",
+                    gallery:"[]",
+                    contacts:"[]"});
+var server = app.listen(port, function(){
+ console.log("Express server has started on port " + port)
 });
 
