@@ -35,11 +35,15 @@ app.use(connect.urlencoded());
 
 
 // [CONFIGURE ROUTER]
-require('./routes/Tab_A.js')(app, db);
+require('./routes/Tab_A.js')(app, user);
 require('./routes/Tab_B.js')(app);
 require('./routes/Tab_C.js')(app);
 
 // [RUN SERVER]
+var User = require('./models/user.js');
+var user = new User({_id:"gimun",
+                    gallery:"[]",
+                    contacts:"[]"});
 var server = app.listen(port, function(){
  console.log("Express server has started on port " + port)
 });
