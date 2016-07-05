@@ -1,5 +1,5 @@
-var Contacs = require('../models/contacs.js');
-var PREFIX = '/A';
+var Contacs = require('../models/user.js');
+var PREFIX = '/A'
 module.exports = function(app)
 {
     // GET ALL BOOKS

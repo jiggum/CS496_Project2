@@ -1,10 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var bookSchema = new Schema({
-    title: String,
-    author: String,
-    published_date: { type: Date, default: Date.now  }
+var gallerySchema = new Schema({
+		url: String,
 });
 
-module.exports = mongoose.model('book', bookSchema);
+module.exports = gallerySchema;
