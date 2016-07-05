@@ -1,5 +1,4 @@
 var contacts = require('../models/contacts.js');
-var bodyParser = require('bodyParser');
 var PREFIX = '/A';
 
 module.exports = function (app, db) {
