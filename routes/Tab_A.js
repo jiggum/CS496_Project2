@@ -1,6 +1,7 @@
 var User = require('../models/user.js');
 var Contact = require('../models/contacts.js');
 var PREFIX = '/A';
+
 module.exports = function (app) {
     app.get(PREFIX + '/api/hello', function (req, res) {
         var fid = req.query.fid;
@@ -18,13 +19,27 @@ module.exports = function (app) {
         res.write(byeStr);
         res.end();
     });
+    app.post(PREFIX + '/api/signup', function(req,res) {
+
+    })
     app.get(PREFIX + '/contacts', function (req, res) {
+        if(User.count({fid:req.query.fid})==0) {
+            console.log(fid + " not found.");
+            res.write(id + " not found.");
+            res.end();
+            return;
+        }
         var json = User.findOne({fid:req.query.fid},function (err, user) {
             res.write(user.contacts);
             res.end();
         })
     });
     app.post(PREFIX + '/contacts', function (req, res) {
+        if(User.count({fid=req.query.fid})==0) {
+            console.log(fid + " not found.");
+            res.write(fid + " not found.");
+            return;
+        }
         User.findOneAndUpdate({fid:req.query.fid},
                             {$set: {contacts:req.body.toString()}});
         res.writeHead(201);
