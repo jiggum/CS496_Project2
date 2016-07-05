@@ -26,9 +26,11 @@ module.exports = function (app, db) {
             if (err)
                 return console.error(err);
 
-            console.log("Sending list : " + "[" + contactsList + "]");
-            res.write("[" + contactsList + "]");
+            var json="["+contactsList+"]";
+
+            console.log("Sending current Contacts : " + json);
+            res.write(json);
             res.end();
         });
-    })
+    });
 }
