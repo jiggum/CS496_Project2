@@ -21,7 +21,7 @@ module.exports = function (app) {
         res.end();
     });
     app.get(PREFIX + '/contacts', function (req, res) {
-
+        console.log('get contacts');
         contactModel = mongoose.model(req.query.fid + "contact", contactSchema, req.query.fid);
         contactModel.find(function (err, contactsList) {
             if (err) return console.error(err);
