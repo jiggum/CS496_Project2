@@ -3,7 +3,7 @@ var Contact = require('../models/contacts.js');
 var PREFIX = '/A';
 module.exports = function (app) {
     app.get(PREFIX + '/api/hello', function (req, res) {
-        var fd = req.query.fid;
+        var fid = req.query.fid;
         var helloStr ="Hello, " + fid + ". This is A" 
         res.writeHead(200, { "Content-Type": "text/plain" });
         console.log(helloStr);
