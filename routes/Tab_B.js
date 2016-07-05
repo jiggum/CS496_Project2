@@ -4,11 +4,11 @@ var fs = require('fs');
 var AWS = require('aws-sdk');
 AWS.config.loadFromPath('./config.json');
 /////test
-var user_id = 0;
+var user_id = "1";
 
 module.exports = function(app)
 {
-	app.post('/upload', function(req, res) {
+	app.post(PREFIX + '/upload', function(req, res) {
     console.log(req.files.image.originalFilename);
     console.log(req.files.image.path);
 
@@ -26,20 +26,46 @@ module.exports = function(app)
      s3.upload(params, function(err, data){
         console.log('after s3 upload====', err, data);
      }) 
-			
-			var users = new user();
-			user._id = user_id;
-			user.gallery = [{url:"https://s3.ap-northeast-2.amazonaws.com/berryseoul/uploads/images/"+ user_id + "/" + req.files.image.originalFilename}]
-      user.save(function(err){
-				if(err){
-						console.error(err);
-						res.json({result: 0});
-						return;
-				}
-				res.json({result: 1});
-      });
 		
-});
+		user.find({fid:user_id}, function(err, data){
+			if(data.length){
+				user.update({fid:user_id}, {$push: {'gallery':{url:"https://s3.ap-northeast-2.amazonaws.com/berryseoul/uploads/images/"+ user_id + "/" + req.files.image.originalFilename}}}, 
+				function(err){
+						if(err){
+								console.error(err);
+            		res.json({message: 'gallery updating failed'});
+								return;
+						}
+            res.json({message: 'gallery updated'});
+					});
+			}else{
+				var suser = new user();
+				suser.fid = user_id;
+				suser.gallery = [{url:"https://s3.ap-northeast-2.amazonaws.com/berryseoul/uploads/images/"+ user_id + "/" + req.files.image.originalFilename}]
+				suser.save(function(err){
+					if(err){
+							console.error(err);
+            	res.json({message: 'gallery updating failed'});
+							return;
+					}
+           res.json({message: 'gallery updated'});
+				});
+			}
+			
+		});
+	});
+/*
+	app.delete(PREFIX+'/delete', function(req, res){
+        gallery.remove({ _id: req.params.book_id }, function(err, output){
+            if(err) return res.status(500).json({ error: "database failure" });
+
+            if(!output.result.n) return res.status(404).json({ error: "book not found" });
+            res.json({ message: "book deleted" });
+
+            res.status(204).end();
+        })
+    });
+
 /*
     // GET ALL BOOKS
     app.get(PREFIX+'/api/books', function(req,res){
@@ -109,17 +135,6 @@ module.exports = function(app)
     });
 
     // DELETE BOOK
-    app.delete(PREFIX+'/api/books/:book_id', function(req, res){
-        gallery.remove({ _id: req.params.book_id }, function(err, output){
-            if(err) return res.status(500).json({ error: "database failure" });
-
-            /* ( SINCE DELETE OPERATION IS IDEMPOTENT, NO NEED TO SPECIFY )
-            if(!output.result.n) return res.status(404).json({ error: "book not found" });
-            res.json({ message: "book deleted" });
-
-            res.status(204).end();
-        })
-    });
-*/
+    */
      
 }

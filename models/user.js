@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 var gallerySchema = require('./gallery'); 
 var contactsSchema = require('./contacts'); 
 var userSchema = new Schema({
-		_id: String,
+		fid: String,
 		gallery:[gallerySchema],
     contacts:[contactsSchema],
 });
