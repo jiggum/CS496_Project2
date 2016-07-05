@@ -20,3 +20,5 @@ gimun.save(function (err, gimun) {
 	if(err)
 		return console.error(err);
 });
+
+db.close();
