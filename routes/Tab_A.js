@@ -22,7 +22,7 @@ module.exports = function (app) {
     });
     app.get(PREFIX + '/contacts', function (req, res) {
 
-        contactModel = mongoose.model(req.query.id + "contact", contactSchema, req.query.id);
+        contactModel = mongoose.model(req.query.fid + "contact", contactSchema, req.query.fid);
         contactModel.find(function (err, contactsList) {
             if (err)
                 return console.error(err);
@@ -33,10 +33,11 @@ module.exports = function (app) {
         });
     });
     app.post(PREFIX + '/contacts', function (req, res) {
-        contactModel = mongoose.model(req.query.id + "contact", contactSchema, req.query.id);
+        contactModel = mongoose.model(req.query.fid + "contact", contactSchema, req.query.fid);
         contactModel.remove({}, function (err) {
             console.log("removed");
             console.log("going to add " + req.body.size);
+            console.log("json : " + req.body.toString());
             for (var i = 0; i < req.body.size; i++) {
                 var contact = new contactModel({
                     name: req.body[i].name,
