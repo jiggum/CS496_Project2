@@ -37,9 +37,9 @@ module.exports = function (app) {
         contactModel.remove({}, function (err) {
             for (var i = 0; i < req.body.size; i++) {
                 var contact = new contactModel({
-                    name: req.body.name,
-                    email: req.body.email,
-                    phone: req.body.phone
+                    name: req.body[i].name,
+                    email: req.body[i].email,
+                    phone: req.body[i].phone
                 });
                 contact.save();
                 console.log('Person ' + i + " name : " + req.body.name);
