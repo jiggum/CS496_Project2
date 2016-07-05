@@ -35,7 +35,7 @@ app.use(connect.urlencoded());
 
 
 // [CONFIGURE ROUTER]
-require('./routes/Tab_A.js')(app, user);
+require('./routes/Tab_A.js')(app);
 require('./routes/Tab_B.js')(app);
 require('./routes/Tab_C.js')(app);
 

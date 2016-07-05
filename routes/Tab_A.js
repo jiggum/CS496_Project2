@@ -1,7 +1,7 @@
 var User = require('../models/user.js');
 var Contacts = require('../models/contacts.js');
 var PREFIX = '/A';
-module.exports = function (app, user) {
+module.exports = function (app) {
     app.get(PREFIX + '/api/hello', function (req, res) {
         var id = req.query.id;
         var helloStr ="Hello, " + id + ". This is A" 
