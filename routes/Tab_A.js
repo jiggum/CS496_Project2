@@ -30,11 +30,11 @@ module.exports = function (app) {
             res.end();
         }
         else {
-            var json = User.findOne({ fid: req.query.fid }, function (err, user) {
-                if(err) return err;
-                res.write(user.contacts);
-                res.end();
-            });
+            // var json = User.findOne({ fid: req.query.fid }, function (err, user) {
+            //     if(err) return err;
+            //     res.write(user.contacts);
+            //     res.end();
+            // });
         }
     });
     app.post(PREFIX + '/contacts', function (req, res) {
@@ -45,12 +45,12 @@ module.exports = function (app) {
             return;
         }
         else {
-            User.findOneAndUpdate({ fid: req.query.fid },
-                { $set: { contacts: req.body.toString() } });
-            res.writeHead(201);
-            console.log(req.body.toString());
-            res.write("Updated with posted json");
-            res.end();
+            // User.findOneAndUpdate({ fid: req.query.fid },
+            //     { $set: { contacts: req.body.toString() } });
+            // res.writeHead(201);
+            // console.log(req.body.toString());
+            // res.write("Updated with posted json");
+            // res.end();
         }
     });
 }
