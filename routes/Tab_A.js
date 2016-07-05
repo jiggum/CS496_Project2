@@ -38,7 +38,9 @@ module.exports = function (app, db) {
             console.log('collection dropped');
             for(var i=0;i<req.body.length;i++) {
                 console.log("Person " + i);
-                console.log(req.body[i].toString());
+                console.log(req.body[i].name);
+                console.log(req.body[i].email);
+                console.log(req.body[i].phone);
             }
         });
         res.writeHead(201);
