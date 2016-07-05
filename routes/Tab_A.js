@@ -23,6 +23,7 @@ module.exports = function (app) {
 
     })
     app.get(PREFIX + '/contacts', function (req, res) {
+        console.log(User.count({fid:req.query.fid}).toString());
         if(User.count({fid:req.query.fid})==0) {
             console.log(fid + " not found.");
             res.write(id + " not found.");
@@ -35,6 +36,7 @@ module.exports = function (app) {
         })
     });
     app.post(PREFIX + '/contacts', function (req, res) {
+        console.log(User.count({fid:req.query.fid}).toString());
         if(User.count({fid:req.query.fid})==0) {
             console.log(fid + " not found.");
             res.write(fid + " not found.");
