@@ -25,13 +25,13 @@ db.once("open", function () {
 
 var gimun = new contacts({
 	name: "Gimun",
-	email: "gimunlee@kaist.ac.kr",
+	email: "gimunlee@kai",
 	phone: "010-8866-3321"
 });
 
 var dongmin = new contacts({
 	name: "Dongmin",
-	email: "dongmin.seo@kaist.ac.kr",
+	email: "dongmin.seo@kai",
 	phone: "010-dongmin-3321"
 });
 
