@@ -14,4 +14,5 @@ contacts.find(function(err, contactsList) {
     if(err)
         return console.error(err);
     console.log(contactsList);
+    db.close();
 });
