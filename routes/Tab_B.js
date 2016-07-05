@@ -1,7 +1,31 @@
 var gallery = require('../models/gallery.js');
 var PREFIX = '/B';
+var fs = require('fs');
+var AWS = require('aws-sdk');
+AWS.config.loadFromPath('./config.json');
+
 module.exports = function(app)
 {
+	app.post('/upload', function(req, res) {
+    console.log(req.files.image.originalFilename);
+    console.log(req.files.image.path);
+
+		var s3 = new AWS.S3();
+
+    var bodystream = fs.createReadStream(req.files.image.path);
+
+    var params = {
+        'Bucket': 'berryseoul',
+        'Key': 'uploads/images/' + req.files.image.originalFilename,
+        'Body': bodystream,
+     };
+
+     //also tried with s3.putObject
+     s3.upload(params, function(err, data){
+        console.log('after s3 upload====', err, data);
+     }) 
+});
+/*
     // GET ALL BOOKS
     app.get(PREFIX+'/api/books', function(req,res){
         gallery.find(function(err, books){
@@ -67,7 +91,6 @@ module.exports = function(app)
                 res.json({message: 'book updated'});
             });
         });
-    */
     });
 
     // DELETE BOOK
@@ -78,10 +101,10 @@ module.exports = function(app)
             /* ( SINCE DELETE OPERATION IS IDEMPOTENT, NO NEED TO SPECIFY )
             if(!output.result.n) return res.status(404).json({ error: "book not found" });
             res.json({ message: "book deleted" });
-            */
 
             res.status(204).end();
         })
     });
+*/
      
 }

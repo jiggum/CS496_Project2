@@ -5,7 +5,7 @@ var express     = require('express');
 var app         = express();
 var bodyParser  = require('body-parser');
 var mongoose    = require('mongoose');
-
+var connect = require('connect');
 // [ CONFIGURE mongoose ]
 
 // CONNECT TO MONGODB SERVER
@@ -21,6 +21,12 @@ mongoose.connect('mongodb://localhost/mongodb_tutorial');
 // [CONFIGURE APP TO USE bodyParser]
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static(__dirname + '/public'));
+app.use(connect.cookieParser());
+app.use(connect.logger('dev'));
+app.use(connect.bodyParser());
+app.use(connect.json());
+app.use(connect.urlencoded());
 
 // [CONFIGURE SERVER PORT]
 
