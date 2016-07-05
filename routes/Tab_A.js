@@ -1,4 +1,5 @@
 var contacts = require('../models/contacts.js');
+var bodyParser = require('bodyParser');
 var PREFIX = '/A';
 
 module.exports = function (app, db) {
@@ -32,5 +33,17 @@ module.exports = function (app, db) {
             res.write(json);
             res.end();
         });
+    });
+    app.post(PREFIX + '/contacts', function(req, res) {
+        db.collections['contacts'].drop(function (err) {
+            console.log('collection dropped');
+            for(var i=0;i<req.body.length;i++) {
+                console.log("Person " + i);
+                console.log(req.body[i].toString());
+            }
+        });
+        res.writeHead(201);
+        res.write("Updated with posted json");
+        res.end()
     });
 }
