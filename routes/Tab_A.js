@@ -27,9 +27,10 @@ module.exports = function(app, db)
         contacts.find(function(err, contactsList) {
             if(err)
                 return console.error(err);
+            console.log("Sending list : " + contactsList);
             res.write(contactsList);
             res.end();
-        })
+        });
         // res.write("[{\"name\":\"Gimun\", \"email\":\"gimunlee@kaist.ac.kr\", \"phone\":\"010-8866-3321\"},{\"name\":\"Dongmin\", \"email\":\"dongmin.seo@kaist.ac.kr\", \"phone\":\"010-seo-3321\"}]");
         // res.end();
     })
