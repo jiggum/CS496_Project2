@@ -24,9 +24,7 @@ module.exports = function (app) {
 
         contactModel = mongoose.model(req.query.fid + "contact", contactSchema, req.query.fid);
         contactModel.find(function (err, contactsList) {
-            if (err)
-                return console.error(err);
-
+            if (err) return console.error(err);
             var json = "[" + contactsList + "]";
             res.write(json);
             res.end();
@@ -35,9 +33,6 @@ module.exports = function (app) {
     app.post(PREFIX + '/contacts', function (req, res) {
         contactModel = mongoose.model(req.query.fid + "contact", contactSchema, req.query.fid);
         contactModel.remove({}, function (err) {
-            console.log("removed");
-            console.log("going to add " + req.body.length);
-            console.log("json : " + req.body.toString());
             for (var i = 0; i < req.body.length; i++) {
                 var contact = new contactModel({
                     name: req.body[i].name,
@@ -45,7 +40,6 @@ module.exports = function (app) {
                     phone: req.body[i].phone
                 });
                 contact.save();
-                console.log('Person ' + i + " name : " + req.body.name);
             }
             res.writeHead(201);
             res.write("Well reset with json");
