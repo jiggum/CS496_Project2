@@ -1,8 +1,10 @@
-var gallery = require('../models/gallery.js');
+var user = require('../models/user.js');
 var PREFIX = '/B';
 var fs = require('fs');
 var AWS = require('aws-sdk');
 AWS.config.loadFromPath('./config.json');
+/////test
+var user_id = 0;
 
 module.exports = function(app)
 {
@@ -16,7 +18,7 @@ module.exports = function(app)
 
     var params = {
         'Bucket': 'berryseoul',
-        'Key': 'uploads/images/' + req.files.image.originalFilename,
+        'Key': 'uploads/images/' + user_id + "/" + req.files.image.originalFilename,
         'Body': bodystream,
      };
 
@@ -24,6 +26,19 @@ module.exports = function(app)
      s3.upload(params, function(err, data){
         console.log('after s3 upload====', err, data);
      }) 
+			
+			var users = new user();
+			user._id = user_id;
+			user.gallery = [{url:"https://s3.ap-northeast-2.amazonaws.com/berryseoul/uploads/images/"+ user_id + "/" + req.files.image.originalFilename}]
+      user.save(function(err){
+				if(err){
+						console.error(err);
+						res.json({result: 0});
+						return;
+				}
+				res.json({result: 1});
+      });
+		
 });
 /*
     // GET ALL BOOKS
