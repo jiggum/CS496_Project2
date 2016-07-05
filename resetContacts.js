@@ -13,7 +13,12 @@ db.once("open", function () {
 		gimun.save(function (err, gimun) {
 			if (err)
 				return console.error(err);
-			db.close();
+			console.log("Dongmin's name is : " + dongmin.name);
+			dongmin.save(function(err, dongmin) {
+				if(err)
+					return console.error(err);
+				db.close();
+			})
 		});
 	})
 });
@@ -22,6 +27,12 @@ var gimun = new contacts({
 	name: "Gimun",
 	email: "gimunlee@kaist.ac.kr",
 	phone: "010-8866-3321"
+});
+
+var dongmin = new contacts({
+	name: "Dongmin",
+	email: "dongmin.seo@kaist.ac.kr",
+	phone: "010-dongmin-3321"
 });
 
 
