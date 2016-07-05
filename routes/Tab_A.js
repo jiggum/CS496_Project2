@@ -28,6 +28,8 @@ module.exports = function (app) {
                 return console.error(err);
 
             var json="["+contactsList+"]";
+            res.write(json);
+            res.end();
         });
     });
     app.get(PREFIX + '/contacts', function (req, res) {
