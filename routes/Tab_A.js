@@ -27,8 +27,8 @@ module.exports = function (app) {
                 return console.error(err);
 
             var json="["+contactsList+"]";
-
-    })
+        });
+    });
     app.get(PREFIX + '/contacts', function (req, res) {
         User.count({ fid: req.query.fid }, function(err, count) {
             if(count==0) {
