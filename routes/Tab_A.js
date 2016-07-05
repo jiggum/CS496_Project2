@@ -1,4 +1,5 @@
-var contacts = require('../models/contacts.js');
+var contactSchema = require('../models/contacts.js');
+var contactModel;
 var PREFIX = '/A';
 
 module.exports = function (app, db) {
@@ -15,7 +16,9 @@ module.exports = function (app, db) {
         res.end();
     });
     app.get(PREFIX + '/contacts', function (req, res) {
-        contacts.find(function (err, contactsList) {
+
+        contactModel=mongoose.model(req.query.id+"contact",contactSchema,req.query.id);
+        contactModel.find(function (err, contactsList) {
             if (err)
                 return console.error(err);
 
