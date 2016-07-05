@@ -1,6 +1,6 @@
+var user = require('../models/user.js');
 var contacts = require('../models/contacts.js');
 var PREFIX = '/A';
-
 module.exports = function (app, db) {
     app.get(PREFIX + '/api/hello', function (req, res) {
         res.writeHead(200, { "Content-Type": "text/plain" });
