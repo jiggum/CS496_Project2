@@ -19,6 +19,6 @@ console.log("Gimun's name is : " + gimun.name);
 gimun.save(function (err, gimun) {
 	if(err)
 		return console.error(err);
+	db.close();
 });
 
-db.close();
