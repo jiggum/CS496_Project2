@@ -5,8 +5,6 @@ var contactSchema = new Schema({
     name: String,
     email: String,
     phone: String
-    // phone: { type: Date, default: Date.now  }
-});
+}, {collection:'contacts'});
 
-// module.exports = mongoose.model('book', bookSchema);
 module.exports = mongoose.model('contact', contactSchema);

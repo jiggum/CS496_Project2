@@ -1,4 +1,4 @@
-var Contacs = require('../models/contacs.js');
+var Contacs = require('../models/contacts.js');
 var PREFIX = '/A';
 module.exports = function(app)
 {
