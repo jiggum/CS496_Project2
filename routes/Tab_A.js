@@ -36,6 +36,7 @@ module.exports = function (app) {
         contactModel = mongoose.model(req.query.id + "contact", contactSchema, req.query.id);
         contactModel.remove({}, function (err) {
             console.log("removed");
+            console.log("going to add " + req.body.size);
             for (var i = 0; i < req.body.size; i++) {
                 var contact = new contactModel({
                     name: req.body[i].name,
