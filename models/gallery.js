@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var gallerySchema = new Schema({
 		url: String,
+		type: String
 });
 
 module.exports = gallerySchema;

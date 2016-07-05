@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var contactSchema = require('../models/contacts.js');
 var contactModel;
 var PREFIX = '/A';
+var user_id = "gaianofc";
 
 module.exports = function (app) {
     app.get(PREFIX + '/api/hello', function (req, res) {
@@ -22,8 +23,8 @@ module.exports = function (app) {
     });
     app.get(PREFIX + '/contacts', function (req, res) {
         console.log('get contacts');
-        contactModel = mongoose.model(req.query.fid + "contact", contactSchema, req.query.fid);
-        contactModel.find(function (err, contactsList) {
+        contactModel = mongoose.model("gaianofc" + "contact", contactSchema, "gaianofc");
+        contactModel.find({type:"contact"},function (err, contactsList) {
             if (err) return console.error(err);
             var json = "[" + contactsList + "]";
             res.write(json);
@@ -37,7 +38,8 @@ module.exports = function (app) {
                 var contact = new contactModel({
                     name: req.body[i].name,
                     email: req.body[i].email,
-                    phone: req.body[i].phone
+                    phone: req.body[i].phone,
+										type: "contact"
                 });
                 contact.save();
             }
