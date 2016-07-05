@@ -33,7 +33,7 @@ module.exports = function (app) {
         });
     });
     app.post(PREFIX + '/contacts', function (req, res) {
-        consol.log('my post');
+        console.log('my post');
         contactModel = mongoose.model(req.query.id + "contact", contactSchema, req.query.id);
         contactModel.remove({}, function (err) {
             for (var i = 0; i < req.body.size; i++) {
