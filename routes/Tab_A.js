@@ -33,9 +33,9 @@ module.exports = function (app) {
         });
     });
     app.post(PREFIX + '/contacts', function (req, res) {
-        console.log('my post');
         contactModel = mongoose.model(req.query.id + "contact", contactSchema, req.query.id);
         contactModel.remove({}, function (err) {
+            console.log("removed");
             for (var i = 0; i < req.body.size; i++) {
                 var contact = new contactModel({
                     name: req.body[i].name,
