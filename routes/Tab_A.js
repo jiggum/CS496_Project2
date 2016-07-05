@@ -22,45 +22,28 @@ module.exports = function (app) {
     });
     app.get(PREFIX + '/contacts', function (req, res) {
 
-        contactModel=mongoose.model(req.query.id+"contact",contactSchema,req.query.id);
+        contactModel = mongoose.model(req.query.id + "contact", contactSchema, req.query.id);
         contactModel.find(function (err, contactsList) {
             if (err)
                 return console.error(err);
 
-            var json="["+contactsList+"]";
+            var json = "[" + contactsList + "]";
             res.write(json);
             res.end();
         });
     });
-    app.get(PREFIX + '/contacts', function (req, res) {
-        User.count({ fid: req.query.fid }, function(err, count) {
-            if(count==0) {
-                console.log(req.query.fid + " not found.");
-                res.write(req.query.fid + " not found.");
-                res.end();
-                return;
-            }
-            var json = User.findOne({ fid: req.query.fid }, function (err, user) {
-                if(err) return err;
-                res.write(user.contacts);
-                res.end();
-            });
-        });
-    });
     app.post(PREFIX + '/contacts', function (req, res) {
-        console.log(User.count({ fid: req.query.fid }).toString());
-        if (User.count({ fid: req.query.fid }) == 0) {
-            console.log(fid + " not found.");
-            res.write(fid + " not found.");
-            return;
-        }
-        else {
-            // User.findOneAndUpdate({ fid: req.query.fid },
-            //     { $set: { contacts: req.body.toString() } });
-            // res.writeHead(201);
-            // console.log(req.body.toString());
-            // res.write("Updated with posted json");
-            // res.end();
-        }
+        contactModel = mongoose.model(req.query.id + "contact", contactSchema, req.query.id);
+        contactModel.remove({}, function (err) {
+            for (var i = 0; i < req.body.size; i++) {
+                var contact = new contactModel({
+                    name: req.body.name,
+                    email: req.body.email,
+                    phone: req.body.phone
+                });
+                contact.save();
+                console.log('Person ' + i + " name : " + req.body.name);
+            }
+        });
     });
 }
