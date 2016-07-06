@@ -53,13 +53,18 @@ module.exports = function (app) {
 
             var cell = req.query.problem;
             var problem = createProblem(5);
+            var answer = calcAnswer(problem);
             problems.unshift(problem);
-            answers.unshift(calcAnswer(problem));
+            answers.unshift(answer);
             var problemIndex = problems.indexOf(problem);
             problemsCell.unshift(cell);
 
+            var choiceStart=Math.floor(answer/10)*10;
+            var choices=_.range(choiceStart,choiceStart+10);
+
             res.writeHead(200);
-            res.write(problem.toString() + ' ans : ' + answers[problemIndex]);
+            res.write('{\"problem\":[' + problem.toString() + '],\"choices\":[' + choices + ']}');
+            // res.write(problem.toString() + ' ans : ' + answers[problemIndex]);
             res.end();
         });
         app.get(PREFIX + '/result', function (req, res) {
@@ -101,6 +106,7 @@ module.exports = function (app) {
         var mapPlayers = 0;
         // var mapBufferFlushing = false;
         app.get(PREFIX + '/map', function (req, res) {
+            console.log('================== map request =======');
             if (req.query.intermediate == '1') {
                 res.writeHead(200);
                 res.write('{\"map\":[' + map.toString() + ']}');
