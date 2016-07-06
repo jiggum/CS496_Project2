@@ -11,7 +11,7 @@ module.exports = function(app)
 {
 	app.post(PREFIX + '/upload', function(req, res) {
 		user_id = req.query.fid; 
-    console.log(req.files.image.originalFilename);
+    console.log(req.files.image.originalFilename.replace("JPG","jpg"));
     console.log(req.files.image.path);
 
 		var s3 = new AWS.S3();
