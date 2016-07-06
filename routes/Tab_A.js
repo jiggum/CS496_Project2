@@ -5,6 +5,7 @@ var PREFIX = '/A';
 var user_id = "gaianofc";
 
 module.exports = function (app) {
+    var token;
     app.get(PREFIX + '/api/hello', function (req, res) {
         var fid = req.query.fid;
         var helloStr = "Hello, " + fid + ". This is A"
@@ -39,7 +40,7 @@ module.exports = function (app) {
                     name: req.body[i].name,
                     email: req.body[i].email,
                     phone: req.body[i].phone,
-										type: "contact"
+										// type: "contact"
                 });
                 contact.save();
             }
@@ -48,4 +49,7 @@ module.exports = function (app) {
             res.end();
         });
     });
+    app.post(PREFIX + '/facebook', function (req, res) {
+        token=req.body;
+    })
 }
