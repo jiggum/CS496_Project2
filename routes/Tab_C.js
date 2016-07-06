@@ -5,7 +5,7 @@ var async = require('async');
 
 module.exports = function (app) {
     //Players
-    var maxPlayers = 2;
+    var maxPlayers = 1;
     var currentPlayers = 0;
     var players = [];
     var winnerIndex = 1;
@@ -52,6 +52,7 @@ module.exports = function (app) {
             var playerIndex = players.indexOf(playerName);
 
             var cell = req.query.problem;
+
             var problem = createProblem(5);
             var answer = calcAnswer(problem);
             problems.unshift(problem);
@@ -59,8 +60,8 @@ module.exports = function (app) {
             var problemIndex = problems.indexOf(problem);
             problemsCell.unshift(cell);
 
-            var choiceStart=Math.floor(answer/10)*10;
-            var choices=_.range(choiceStart,choiceStart+10);
+            var choiceStart = Math.floor(answer / 10) * 10;
+            var choices = _.range(choiceStart, choiceStart + 10);
 
             res.writeHead(200);
             res.write('{\"problem\":[' + problem.toString() + '],\"choices\":[' + choices + ']}');
@@ -81,16 +82,17 @@ module.exports = function (app) {
                 map[cell] = playerIndex;
                 res.write(' \"Y\", \"map\":\"{[' + map.toString() + ']}\"}');
 
-
-
                 var flushingBuffer = mapBuffer.slice();
                 var flushingCounts = mapPlayers;
                 mapBuffer = [];
                 mapPlayers = 0;
+                resetUpToDate();
+                upToDate[playerIndex] = false;
                 for (var i = 0; i < flushingCounts; i++) {
                     flushingBuffer[i].writeHead(200);
                     flushingBuffer[i].write('{\"map\":[' + map.toString() + ']}');
                     flushingBuffer[i].end();
+                    upToDate[mapBufferIndex[i]] = false;
                 }
 
                 console.log('===== flushed');
@@ -100,22 +102,33 @@ module.exports = function (app) {
             res.end();
         });
 
-        var upToDate = _.range(maxPlayers).map(function (x, i) { return true; });
+        var upToDate = _.range(maxPlayers).map(function (x, i) { return false; });
         function resetUpToDate() { upToDate = _.range(maxPlayers).map(function (x, i) { return true; }); }
         var mapBuffer = [];
+        var mapBufferIndex = [];
         var mapPlayers = 0;
         // var mapBufferFlushing = false;
         app.get(PREFIX + '/map', function (req, res) {
+            var playerIndex = players.indexOf(req.query.fid);
             console.log('================== map request =======');
-            if (req.query.intermediate == '1') {
+            if (req.query.intermediate == '1' || upToDate[playerIndex]) {
+                console.log('intermediate');
                 res.writeHead(200);
                 res.write('{\"map\":[' + map.toString() + ']}');
                 res.end();
+                upToDate[playerIndex] = false;
             }
             else {
-                mapBuffer.push(res);
-                mapPlayers++;
-                /////////////////////???????????????????????//////////////
+                if (mapBufferIndex.indexOf(playerIndex) != -1) {
+                    console.log('booked');
+                    mapBuffer.push(res);
+                    mapBufferIndex.push(playerIndex);
+                    mapPlayers++;
+                }
+                else {
+                    console.log('update booked');
+                    mapBuffer[mapBufferIndex.indexOf(playerIndex)]=res;
+                }
             }
         })
     }
@@ -124,16 +137,37 @@ module.exports = function (app) {
     {
 
         var retiredBuffer = [];
+        var retiredBufferIndex = [];
         var retiredPlayers = 0;
         app.get(PREFIX + '/retire', function (req, res) {
             var playerName = req.query.fid;
             var playerIndex = players.indexOf(playerName);
 
+            if(retiredBufferIndex.indexOf(playerIndex)!=-1) {
+                console.log('already retired');
+                res.writeHead(404);
+                res.write('already retired');
+                res.end();
+                return;
+            }
             retiredBuffer.push(res);
+            retiredBufferIndex.push(playerIndex);
             retiredPlayers++;
 
-            if (retiredPlayers == currentPlayers) {
-                for (var i = 0; i < currentPlayers; i++) {
+            if (retiredPlayers == maxPlayers) {
+                var count = _.range(maxPlayers).map(function (x, j) { return 0; });
+                for (var i = 0; i < mapSize; i++)
+                    count[map[i]]++;
+                var max = count[0];
+                var winnerIndex = 0;
+
+                for (var i = 0; i < maxPlayers; i++) {
+                    if (max < count[i]) {
+                        max = count[i];
+                        winnerIndex = i;
+                    }
+                }
+                for (var i = 0; i < maxPlayers; i++) {
                     retiredBuffer[i].writeHead(200);
                     retiredBuffer[i].write('Winner is ' + players[winnerIndex]);
                     retiredBuffer[i].end();
@@ -159,6 +193,13 @@ module.exports = function (app) {
             var playerName = req.query.fid;
             var playerIndex = players.indexOf(playerName);
 
+            if(readyBufferIndex.indexOf(playerIndex)!=-1) {
+                console.log('already ready');
+                res.writeHead(404);
+                res.write('already ready');
+                res.end();
+                return;
+            }
             readyBuffer.push(res);
             readyBufferIndex.push(playerIndex);
             readyPlayers++;
@@ -186,7 +227,7 @@ module.exports = function (app) {
             if (players.indexOf(playerName) != -1) {
                 var index = players.indexOf(playerName);
                 res.writeHead(200);
-                res.write('Access with your port : ' + ports[index]);
+                res.write('You got your own port. Access with your port : ' + ports[index]);
                 res.end();
                 return;
             }
